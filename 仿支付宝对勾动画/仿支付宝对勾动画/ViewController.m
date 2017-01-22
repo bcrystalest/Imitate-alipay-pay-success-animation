@@ -20,30 +20,42 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.successView = [[SuccessView alloc]initWithFrame:CGRectMake(0, 50, 30, 100)];
+    self.successView = [[SuccessView alloc]initWithFrame:CGRectMake(0, 100, 100, 100)];
     [self.successView setCheckShapeLayerColor:[UIColor redColor]];
-    [self.successView setCheckShapeLayerWidth:1.0];
+    [self.successView setCheckShapeLayerWidth:3.0];
     [self.successView setCycleShapeLayerColor:[UIColor redColor]];
-    [self.successView setCycleShapeLayerWidth:1.0];
+    [self.successView setCycleShapeLayerWidth:3.0];
     
     [self.view addSubview:self.successView];
-    
+    //开始旋转
     [self.successView startAlarming];
     self.view.backgroundColor=[UIColor whiteColor];
     
     UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(100, 40, 40, 20)];
     
-    btn.backgroundColor = [UIColor redColor];
+    btn.backgroundColor = [UIColor greenColor];
     [self.view addSubview:btn];
     [btn addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchDown];
     
- 
+    UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(300, 40, 40, 20)];
+    
+    btn2.backgroundColor = [UIColor redColor];
+    [self.view addSubview:btn2];
+    [btn2 addTarget:self action:@selector(failure) forControlEvents:UIControlEventTouchDown];
 }
+
 
 
 - (void)done
 {
+    //结束并成功
     [self.successView done];
+}
+
+- (void)failure
+{
+    //结束并失败
+    [self.successView failure];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -22,7 +22,7 @@
 #define sWidth self.frame.size.width
 #define sWidthSmall (sWidth*4/5)
 #define sqrtValue sWidthSmall*sqrt(2)*2/3
-#define sqrtValue2 sWidth*sqrt(2)*2/3
+#define sqrtValue2 sWidthSmall/2/sqrt(2)
 #define myWeakSelf __weak typeof(self) weakSelf = self;
 
 //sqrt(sWidth*sWidth - (sWidth - 1)*(sWidth - 1))
@@ -176,14 +176,56 @@
     [self.checkShapeLayer addAnimation:animation forKey:NSStringFromSelector(@selector(strokeEnd))];
 }
 
+- (void)failure
+{
+    [_timer invalidate];
+    self.cycleShapeLayer.strokeStart = 0;
+    self.cycleShapeLayer.strokeEnd = 0;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                              target:self
+                                            selector:@selector(circleAnimationTypeDone)
+                                            userInfo:nil
+                                             repeats:YES];
+    UIBezierPath* path1 = [UIBezierPath bezierPath];
+    UIBezierPath* path2 = [UIBezierPath bezierPath];
+    //对拐角和中点处理
+    path1.lineCapStyle  = kCGLineCapRound;
+    path1.lineJoinStyle = kCGLineCapRound;
+    path2.lineCapStyle  = kCGLineCapRound;
+    path2.lineJoinStyle = kCGLineCapRound;
+    //叉的第一画
+    [path1 moveToPoint:CGPointMake(sWidthSmall/2 - sqrtValue2, sWidthSmall/2 - sqrtValue2)];
+    CGPoint p1 = CGPointMake(sWidthSmall/2 + sqrtValue2, sWidthSmall/2 + sqrtValue2);
+    [path1 addLineToPoint:p1];
+    
+    //叉的第二画
+    [path1 moveToPoint:CGPointMake(sWidthSmall/2 + sqrtValue2, sWidthSmall/2 - sqrtValue2)];
+    CGPoint p2 = CGPointMake(sWidthSmall/2 - sqrtValue2,sWidthSmall/2 + sqrtValue2);
+    [path1 addLineToPoint:p2];
+    
+    //线条宽度
+    self.checkShapeLayer.path = path1.CGPath;
+    
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:NSStringFromSelector(@selector(strokeEnd))];
+    animation.fillMode= kCAFillModeForwards;
+    animation.removedOnCompletion = NO;
+    animation.fromValue = @0;
+    animation.toValue = @1;
+    animation.duration = 1;
+    animation.delegate = self;
+    [self.checkShapeLayer addAnimation:animation forKey:NSStringFromSelector(@selector(strokeEnd))];
+}
+
+
+
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
     
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        myWeakSelf;
-        [weakSelf removeFromSuperview];
-    });
+//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//        myWeakSelf;
+//        [weakSelf removeFromSuperview];
+//    });
     
 }
 

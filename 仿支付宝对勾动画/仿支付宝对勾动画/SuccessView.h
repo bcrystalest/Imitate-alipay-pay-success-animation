@@ -13,6 +13,8 @@
 //结束时调用
 - (void)done;
 
+- (void)failure;
+
 - (void)setCycleShapeLayerColor:(UIColor *)color;
 
 - (void)setCycleShapeLayerWidth:(CGFloat)width;
