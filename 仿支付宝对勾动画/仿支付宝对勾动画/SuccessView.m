@@ -54,7 +54,7 @@
 }
 
 - (void)startAlarming{
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.05
                                               target:self
                                             selector:@selector(circleAnimationTypeOne)
                                             userInfo:nil
@@ -143,7 +143,7 @@
     [_timer invalidate];
     self.cycleShapeLayer.strokeStart = 0;
     self.cycleShapeLayer.strokeEnd = 0;
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.07
                                               target:self
                                             selector:@selector(circleAnimationTypeDone)
                                             userInfo:nil
